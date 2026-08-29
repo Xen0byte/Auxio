@@ -49,10 +49,10 @@ android {
         buildConfig true
     }
     lint {
-        targetSdk 36
+        targetSdk target_sdk
     }
     testOptions {
-        targetSdk 36
+        targetSdk target_sdk
     }
 }
 
