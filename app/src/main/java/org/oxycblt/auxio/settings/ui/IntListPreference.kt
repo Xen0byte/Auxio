@@ -50,9 +50,9 @@ constructor(
     defStyleRes: Int = 0,
 ) : DialogPreference(context, attrs, defStyleAttr, defStyleRes) {
     /** The names of each entry. */
-    val entries: Array<CharSequence>
+    var entries: Array<CharSequence> = arrayOf()
     /** The corresponding integer values for each entry. */
-    val values: IntArray
+    var values: IntArray = intArrayOf()
 
     private var entryIcons: TypedArray? = null
     private var offValue: Int? = -1
@@ -68,8 +68,8 @@ constructor(
 
             // Can't depend on ListPreference due to it working with strings we have to instead
             // define our own attributes for entries/values.
-            val entries = getTextArrayOrThrow(R.styleable.IntListPreference_entries)
-            val values =
+            entries = getTextArrayOrThrow(R.styleable.IntListPreference_entries)
+            values =
                 context.resources.getIntArray(
                     getResourceIdOrThrow(R.styleable.IntListPreference_entryValues)
                 )

@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.AttrRes
@@ -158,7 +159,7 @@ constructor(
         }
     }
 
-    override fun addView(child: View?, index: Int, params: LayoutParams?) {
+    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
         if (inflatingLayout) {
             super.addView(child, index, params)
         } else {
