@@ -95,9 +95,8 @@ private constructor(
     val token: MediaSessionCompat.Token
         get() = mediaSession.sessionToken
 
-    private val _notification = PlaybackNotification(context, mediaSession.sessionToken)
     val notification: ForegroundServiceNotification
-        get() = _notification
+        field = PlaybackNotification(context, mediaSession.sessionToken)
 
     fun attach() {
         playbackManager.addListener(this)
@@ -172,7 +171,7 @@ private constructor(
 
     override fun onProgressionChanged(progression: Progression) {
         invalidateSessionState()
-        _notification.updatePlaying(playbackManager.progression.isPlaying)
+        notification.updatePlaying(playbackManager.progression.isPlaying)
         if (!bitmapProvider.isBusy) {
             foregroundListener.updateForeground(ForegroundListener.Change.MEDIA_SESSION)
         }
@@ -297,7 +296,7 @@ private constructor(
                     }
                     val metadata = builder.build()
                     mediaSession.setMetadata(metadata)
-                    _notification.updateMetadata(metadata)
+                    notification.updateMetadata(metadata)
                     foregroundListener.updateForeground(ForegroundListener.Change.MEDIA_SESSION)
                 }
             },
@@ -370,8 +369,8 @@ private constructor(
         L.d("Invalidating notification actions")
         invalidateSessionState()
 
-        _notification.updateRepeatMode(playbackManager.repeatMode)
-        _notification.updateShuffled(playbackManager.isShuffled)
+        notification.updateRepeatMode(playbackManager.repeatMode)
+        notification.updateShuffled(playbackManager.isShuffled)
 
         if (!bitmapProvider.isBusy) {
             L.d("Not loading a bitmap, post the notification")

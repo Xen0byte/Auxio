@@ -19,7 +19,6 @@
 package org.oxycblt.musikr.pipeline
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.channels.Channel
 import org.oxycblt.musikr.BuildConfig
 import org.oxycblt.musikr.Config
@@ -69,7 +68,6 @@ private class EvaluateStepImpl(
         if (BuildConfig.DEBUG) {
             val fileName = "music_graph_debug.dot"
             graph.renderToGraphviz(context, fileName)
-            val filePath = context.filesDir.resolve(fileName).absolutePath
         }
 
         return libraryFactory.create(graph, storedPlaylists, playlistInterpreter)

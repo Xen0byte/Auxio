@@ -285,10 +285,10 @@ private class MusicGraphBuilderImpl : MusicGraph.Builder {
             val canon = cluster.maxBy { it.songVertices.size }.preAlbum
             val same = cluster.all { it.preAlbum == canon }
             if (!same) {
-                val noMbidPreAlbum = canon
+                // canon is the no-mbid pre-album
                 val simpleMbidVertex =
-                    albumVertices.getOrPut(noMbidPreAlbum) {
-                        AlbumVertex(noMbidPreAlbum, mutableListOf())
+                    albumVertices.getOrPut(canon) {
+                        AlbumVertex(canon, mutableListOf())
                     }
                 for (album in cluster) {
                     meldAlbumVertices(album, simpleMbidVertex)

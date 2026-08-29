@@ -56,7 +56,7 @@ private constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun explore(files: Channel<File>): Deferred<Result<Unit>> = coroutineScope {
-        tryAsyncWith(files, Dispatchers.IO) {
+        tryAsyncWith(files, Dispatchers.IO) { _ ->
             val projection = BASE_PROJECTION + pathInterpreterFactory.projection
             var selector = BASE_SELECTOR
             val args = mutableListOf<String>()

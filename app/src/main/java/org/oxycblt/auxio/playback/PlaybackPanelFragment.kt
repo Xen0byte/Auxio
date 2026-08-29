@@ -82,7 +82,6 @@ class PlaybackPanelFragment :
     private val queueModel: QueueViewModel by viewModels()
     private var equalizerLauncher: ActivityResultLauncher<Intent>? = null
     private var userAwarePagerCallback: UserAwarePagerCallback? = null
-    private var currentPagerPosition = 0
 
     override fun onCreateBinding(inflater: LayoutInflater) =
         FragmentPlaybackPanelBinding.inflate(inflater)
@@ -396,6 +395,4 @@ class PlaybackPanelFragment :
             Direction.BACKWARDS -> playbackModel.stepBackwards()
         }
     }
-
-    private companion object {}
 }

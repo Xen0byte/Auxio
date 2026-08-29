@@ -18,6 +18,7 @@
  
 package org.oxycblt.auxio.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -123,6 +124,7 @@ class Spatial private constructor(@AttrRes val attr: Int, val defaultStyle: Int)
         }
     }
 
+    @SuppressLint("PrivateResource")
     companion object {
         val FAST =
             Spatial(
@@ -134,11 +136,11 @@ class Spatial private constructor(@AttrRes val attr: Int, val defaultStyle: Int)
                 MR.attr.motionSpringDefaultSpatial,
                 MR.style.Motion_Material3_Spring_Standard_Default_Spatial,
             )
-        val SLOW =
-            Spatial(
-                MR.attr.motionSpringSlowSpatial,
-                MR.style.Motion_Material3_Spring_Standard_Slow_Spatial,
-            )
+        //        val SLOW =
+        //            Spatial(
+        //                MR.attr.motionSpringSlowSpatial,
+        //                MR.style.Motion_Material3_Spring_Standard_Slow_Spatial,
+        //            )
     }
 }
 
@@ -190,11 +192,11 @@ class Effect private constructor(@AttrRes val attr: Int, @StyleRes val defaultSt
                 MR.attr.motionSpringDefaultEffects,
                 MR.style.Motion_Material3_Spring_Standard_Default_Effects,
             )
-        val SLOW =
-            Effect(
-                MR.attr.motionSpringSlowEffects,
-                MR.style.Motion_Material3_Spring_Standard_Slow_Effects,
-            )
+        //        val SLOW =
+        //            Effect(
+        //                MR.attr.motionSpringSlowEffects,
+        //                MR.style.Motion_Material3_Spring_Standard_Slow_Effects,
+        //            )
         val FAST =
             Effect(
                 MR.attr.motionSpringFastEffects,

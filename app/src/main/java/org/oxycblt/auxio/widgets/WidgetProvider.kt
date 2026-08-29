@@ -119,7 +119,7 @@ class WidgetProvider : AppWidgetProvider() {
 
         // Manually update AppWidgetManager with the new views.
         val component = ComponentName(context, this::class.java)
-        while (victims.size > 0) {
+        while (victims.isNotEmpty()) {
             try {
                 awm.updateAppWidgetCompat(context, component, views)
                 L.d("Successfully updated RemoteViews layout")

@@ -77,10 +77,10 @@ class StepperOverlay(context: Context, attrs: AttributeSet?) :
         LayoutInflater.from(context).inflate(R.layout.player_fast_seek_overlay, this, true)
 
         // Set up shape appearance based on UISettings similar to CoverView
-        context.withStyledAttributes(attrs, R.styleable.PlayerFastSeekOverlay) {
+        context.withStyledAttributes(attrs, R.styleable.StepperOverlay) {
             val shapeAppearanceRes =
                 getResourceId(
-                    R.styleable.PlayerFastSeekOverlay_shapeAppearance,
+                    R.styleable.StepperOverlay_shapeAppearance,
                     com.google.android.material.R.style.ShapeAppearance_Material3_Corner_Medium,
                 )
 

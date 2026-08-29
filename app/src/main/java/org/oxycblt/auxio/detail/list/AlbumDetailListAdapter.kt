@@ -86,12 +86,14 @@ class AlbumDetailListAdapter(private val listener: Listener<Song>) :
         val DIFF_CALLBACK =
             object : SimpleDiffCallback<Item>() {
                 override fun areContentsTheSame(oldItem: Item, newItem: Item) =
-                    when {
-                        oldItem is Disc && newItem is Disc ->
+                    when (oldItem) {
+                        is Disc if newItem is Disc ->
                             DiscHeaderViewHolder.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
-                        oldItem is DiscDivider && newItem is DiscDivider ->
+
+                        is DiscDivider if newItem is DiscDivider ->
                             DiscDividerViewHolder.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
-                        oldItem is Song && newItem is Song ->
+
+                        is Song if newItem is Song ->
                             AlbumSongViewHolder.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem)
 
                         // Fall back to DetailAdapter's differ to handle other headers.

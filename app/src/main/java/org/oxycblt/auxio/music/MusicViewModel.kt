@@ -62,24 +62,19 @@ constructor(
     /** The current music loading state, or null if no loading is going on. */
     val indexingState: StateFlow<IndexingState?> = _indexingState
 
-    private val _statistics = MutableStateFlow<Statistics?>(null)
-
     /** [Statistics] about the last completed music load. */
     val statistics: StateFlow<Statistics?>
-        get() = _statistics
-
-    private val _playlistDecision = MutableEvent<PlaylistDecision>()
+        field = MutableStateFlow<Statistics?>(null)
 
     /**
      * A [PlaylistDecision] command that is awaiting a view capable of responding to it. Null if
      * none currently.
      */
     val playlistDecision: Event<PlaylistDecision>
-        get() = _playlistDecision
+        field = MutableEvent<PlaylistDecision>()
 
-    private val _playlistMessage = MutableEvent<PlaylistMessage>()
     val playlistMessage: Event<PlaylistMessage>
-        get() = _playlistMessage
+        field = MutableEvent<PlaylistMessage>()
 
     init {
         musicRepository.addUpdateListener(this)
@@ -94,7 +89,7 @@ constructor(
     override fun onMusicChanges(changes: MusicRepository.Changes) {
         if (!changes.deviceLibrary) return
         val library = musicRepository.library ?: return
-        _statistics.value =
+        statistics.value =
             Statistics(
                 library.songs.size,
                 library.albums.size,
@@ -103,7 +98,7 @@ constructor(
                 library.songs.sumOf { it.durationMs },
                 library.songs.sumOf { it.size },
             )
-        L.d("Updated statistics: ${_statistics.value}")
+        L.d("Updated statistics: ${statistics.value}")
     }
 
     override fun onIndexingStateChanged() {
@@ -145,11 +140,11 @@ constructor(
                         PlaylistDecision.New.Reason.ADD -> PlaylistMessage.AddSuccess
                         PlaylistDecision.New.Reason.IMPORT -> PlaylistMessage.ImportSuccess
                     }
-                _playlistMessage.put(message)
+                playlistMessage.put(message)
             }
         } else {
             L.d("Launching creation dialog for ${songs.size} songs")
-            _playlistDecision.put(PlaylistDecision.New(songs, null, reason))
+            playlistDecision.put(PlaylistDecision.New(songs, null, reason))
         }
     }
 
@@ -168,7 +163,7 @@ constructor(
                 val importedPlaylist = externalPlaylistManager.import(uri)
                 if (importedPlaylist == null) {
                     L.e("Could not import playlist")
-                    _playlistMessage.put(PlaylistMessage.ImportFailed)
+                    playlistMessage.put(PlaylistMessage.ImportFailed)
                     return@launch
                 }
 
@@ -180,13 +175,13 @@ constructor(
 
                 if (songs.isEmpty()) {
                     L.e("No songs found")
-                    _playlistMessage.put(PlaylistMessage.ImportFailed)
+                    playlistMessage.put(PlaylistMessage.ImportFailed)
                     return@launch
                 }
 
                 if (target !== null) {
                     if (importedPlaylist.name != null && importedPlaylist.name != target.name.raw) {
-                        _playlistDecision.put(
+                        playlistDecision.put(
                             PlaylistDecision.Rename(
                                 target,
                                 importedPlaylist.name,
@@ -196,10 +191,10 @@ constructor(
                         )
                     } else {
                         musicRepository.rewritePlaylist(target, songs)
-                        _playlistMessage.put(PlaylistMessage.ImportSuccess)
+                        playlistMessage.put(PlaylistMessage.ImportSuccess)
                     }
                 } else {
-                    _playlistDecision.put(
+                    playlistDecision.put(
                         PlaylistDecision.New(
                             songs,
                             importedPlaylist.name,
@@ -210,7 +205,7 @@ constructor(
             }
         } else {
             L.d("Launching import picker")
-            _playlistDecision.put(PlaylistDecision.Import(target))
+            playlistDecision.put(PlaylistDecision.Import(target))
         }
     }
 
@@ -225,14 +220,14 @@ constructor(
             L.d("Exporting playlist to $uri")
             viewModelScope.launch(Dispatchers.IO) {
                 if (externalPlaylistManager.export(playlist, uri, config)) {
-                    _playlistMessage.put(PlaylistMessage.ExportSuccess)
+                    playlistMessage.put(PlaylistMessage.ExportSuccess)
                 } else {
-                    _playlistMessage.put(PlaylistMessage.ExportFailed)
+                    playlistMessage.put(PlaylistMessage.ExportFailed)
                 }
             }
         } else {
             L.d("Launching export dialog")
-            _playlistDecision.put(PlaylistDecision.Export(playlist))
+            playlistDecision.put(PlaylistDecision.Export(playlist))
         }
     }
 
@@ -264,11 +259,11 @@ constructor(
                         PlaylistDecision.Rename.Reason.ACTION -> PlaylistMessage.RenameSuccess
                         PlaylistDecision.Rename.Reason.IMPORT -> PlaylistMessage.ImportSuccess
                     }
-                _playlistMessage.put(message)
+                playlistMessage.put(message)
             }
         } else {
             L.d("Launching rename dialog for $playlist")
-            _playlistDecision.put(PlaylistDecision.Rename(playlist, null, applySongs, reason))
+            playlistDecision.put(PlaylistDecision.Rename(playlist, null, applySongs, reason))
         }
     }
 
@@ -285,11 +280,11 @@ constructor(
             L.d("Deleting $playlist")
             viewModelScope.launch(Dispatchers.IO) {
                 musicRepository.deletePlaylist(playlist)
-                _playlistMessage.put(PlaylistMessage.DeleteSuccess)
+                playlistMessage.put(PlaylistMessage.DeleteSuccess)
             }
         } else {
             L.d("Launching deletion dialog for $playlist")
-            _playlistDecision.put(PlaylistDecision.Delete(playlist))
+            playlistDecision.put(PlaylistDecision.Delete(playlist))
         }
     }
 
@@ -348,11 +343,11 @@ constructor(
             L.d("Adding ${songs.size} songs to $playlist")
             viewModelScope.launch(Dispatchers.IO) {
                 musicRepository.addToPlaylist(songs, playlist)
-                _playlistMessage.put(PlaylistMessage.AddSuccess)
+                playlistMessage.put(PlaylistMessage.AddSuccess)
             }
         } else {
             L.d("Launching addition dialog for songs=${songs.size}")
-            _playlistDecision.put(PlaylistDecision.Add(songs))
+            playlistDecision.put(PlaylistDecision.Add(songs))
         }
     }
 
