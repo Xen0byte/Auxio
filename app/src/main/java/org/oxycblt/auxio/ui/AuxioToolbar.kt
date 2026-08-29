@@ -46,6 +46,7 @@ import androidx.core.view.size
 import com.google.android.material.R as MR
 import org.oxycblt.auxio.R
 import org.oxycblt.auxio.databinding.ViewToolbarBinding
+import org.oxycblt.auxio.util.isRtl
 import org.oxycblt.auxio.util.unlikelyToBeNull
 
 /**
@@ -146,6 +147,9 @@ constructor(
                 toolbarAttrs.getText(AR.styleable.Toolbar_navigationContentDescription)
             isVisible = icon != null
             TooltipCompat.setTooltipText(this, contentDescription)
+            if (isRtl) {
+                rotation = 180f
+            }
         }
 
         val menuResId = toolbarAttrs.getResourceId(AR.styleable.Toolbar_menu, 0)
