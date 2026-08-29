@@ -67,15 +67,9 @@ private class EvaluateStepImpl(
 
         // Render graph to Graphviz in debug mode
         if (BuildConfig.DEBUG) {
-            try {
-                val fileName = "music_graph_debug.dot"
-                graph.renderToGraphviz(context, fileName)
-                val filePath = context.filesDir.resolve(fileName).absolutePath
-                Log.d("EvaluateStep", "Music graph rendered to: $filePath")
-                Log.d("EvaluateStep", "To pull the file, run: adb pull $filePath")
-            } catch (e: Exception) {
-                Log.e("EvaluateStep", "Failed to render music graph", e)
-            }
+            val fileName = "music_graph_debug.dot"
+            graph.renderToGraphviz(context, fileName)
+            val filePath = context.filesDir.resolve(fileName).absolutePath
         }
 
         return libraryFactory.create(graph, storedPlaylists, playlistInterpreter)
