@@ -41,10 +41,9 @@ class DBCache private constructor(private val readDao: CacheReadDao) : Cache {
     private val mappingLock = Mutex()
 
     override suspend fun read(file: File): CacheResult {
-        val currentMapping =
-            mappingLock.withLock {
-                mapping ?: readDao.selectAllSongs().associateBy { it.uri }.also { mapping = it }
-            }
+        val currentMapping = mappingLock.withLock {
+            mapping ?: readDao.selectAllSongs().associateBy { it.uri }.also { mapping = it }
+        }
         val dbSong = currentMapping[file.uri] ?: return CacheResult.Miss(file)
         if (dbSong.modifiedMs != file.modifiedMs) {
             return CacheResult.Stale(file, dbSong.addedMs)
@@ -148,8 +147,7 @@ private constructor(private val inner: DBCache, private val writeDao: CacheWrite
             return MutableDBCache(DBCache.from(db), db.writeDao())
         }
 
-        internal fun from(inner: DBCache, writeDao: CacheWriteDao) =
-            MutableDBCache(inner, writeDao)
+        internal fun from(inner: DBCache, writeDao: CacheWriteDao) = MutableDBCache(inner, writeDao)
 
         private const val BATCH_SIZE = 500
     }

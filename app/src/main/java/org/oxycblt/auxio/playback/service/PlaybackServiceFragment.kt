@@ -89,14 +89,11 @@ private constructor(
 
     private fun scheduleAutoStop() {
         autoStopJob?.cancel()
-        autoStopJob =
-            scope.launch {
-                delay(AUTO_STOP_DELAY_MS)
-                L.d(
-                    "Auto-stop timer expired after ${AUTO_STOP_DELAY_MS / 60000} minutes of inactivity"
-                )
-                playbackManager.endSession()
-            }
+        autoStopJob = scope.launch {
+            delay(AUTO_STOP_DELAY_MS)
+            L.d("Auto-stop timer expired after ${AUTO_STOP_DELAY_MS / 60000} minutes of inactivity")
+            playbackManager.endSession()
+        }
     }
 
     private fun cancelAutoStop() {

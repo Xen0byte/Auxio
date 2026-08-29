@@ -194,14 +194,13 @@ constructor(
         // Replace the previous position co-routine with a new one that uses the new
         // state information.
         lastPositionJob?.cancel()
-        lastPositionJob =
-            viewModelScope.launch {
-                while (true) {
-                    _positionDs.value = progression.calculateElapsedPositionMs().msToDs()
-                    // Wait a deci-second for the next position tick.
-                    delay(100)
-                }
+        lastPositionJob = viewModelScope.launch {
+            while (true) {
+                _positionDs.value = progression.calculateElapsedPositionMs().msToDs()
+                // Wait a deci-second for the next position tick.
+                delay(100)
             }
+        }
     }
 
     override fun onRepeatModeChanged(repeatMode: RepeatMode) {

@@ -310,17 +310,16 @@ private constructor(
      * @param queue The current queue to upload.
      */
     private fun updateQueue(queue: List<Song>) {
-        val queueItems =
-            queue.mapIndexed { i, song ->
-                val description =
-                    song.toMediaDescription(
-                        context,
-                        { putInt(MediaSessionInterface.KEY_QUEUE_POS, i) },
-                    )
-                // Store the item index so we can then use the analogous index in the
-                // playback state.
-                MediaSessionCompat.QueueItem(description, i.toLong())
-            }
+        val queueItems = queue.mapIndexed { i, song ->
+            val description =
+                song.toMediaDescription(
+                    context,
+                    { putInt(MediaSessionInterface.KEY_QUEUE_POS, i) },
+                )
+            // Store the item index so we can then use the analogous index in the
+            // playback state.
+            MediaSessionCompat.QueueItem(description, i.toLong())
+        }
         L.d("Uploading ${queueItems.size} songs to MediaSession queue")
         mediaSession.setQueue(queueItems)
     }
