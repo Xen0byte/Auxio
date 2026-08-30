@@ -20,7 +20,6 @@ package org.oxycblt.auxio.list.recycler
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.annotation.AttrRes
 import androidx.core.view.isInvisible
 import androidx.core.view.updatePadding
@@ -31,9 +30,7 @@ import org.oxycblt.auxio.R
 import org.oxycblt.auxio.util.getDimenPixels
 
 /**
- * A [RecyclerView] intended for use in Dialogs, adding features such as:
- * - NestedScrollView scrollIndicators behavior emulation
- * - Dialog-specific [ViewHolder] that automatically resolves certain issues.
+ * A [RecyclerView] intended for use in dialogs, with NestedScrollView-style scroll indicators.
  *
  * @author Alexander Capehart (OxygenCobalt)
  */
@@ -101,14 +98,5 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
         // Bottom divider should only be visible when the lsat item is completely on-screen.
         bottomDivider.isInvisible =
             lmm.findLastCompletelyVisibleItemPosition() == (lmm.itemCount - 1)
-    }
-
-    /** A [RecyclerView.ViewHolder] that implements dialog-specific fixes. */
-    abstract class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        init {
-            // ViewHolders are not automatically full-width in dialogs, manually resize
-            // them to be as such.
-            root.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        }
     }
 }
