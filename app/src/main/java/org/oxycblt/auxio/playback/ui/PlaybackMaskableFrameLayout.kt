@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2026 Auxio Project
- * RoundModeMaskableFrameLayout.kt is part of Auxio.
+ * PlaybackMaskableFrameLayout.kt is part of Auxio.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

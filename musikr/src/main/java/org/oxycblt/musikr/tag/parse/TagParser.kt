@@ -31,8 +31,7 @@ internal interface TagParser {
 private data object TagParserImpl : TagParser {
     override fun parse(metadata: Metadata): ParsedTags {
         val compilation = metadata.isCompilation()
-        var artistMusicBrainzIds =
-            metadata.artistMusicBrainzIds() ?: listOf()
+        var artistMusicBrainzIds = metadata.artistMusicBrainzIds() ?: listOf()
         var artistNames = metadata.artistNames()
         var artistSortNames = metadata.artistSortNames() ?: listOf()
         if (artistNames == null) {
@@ -43,7 +42,7 @@ private data object TagParserImpl : TagParser {
             // hybridize sort tags or MBIDs between artist/composer.
             artistMusicBrainzIds = metadata.composerMusicBrainzIds() ?: listOf()
             artistNames = metadata.composerNames() ?: listOf()
-            artistSortNames =  metadata.composerSortNames() ?: listOf()
+            artistSortNames = metadata.composerSortNames() ?: listOf()
         }
         return ParsedTags(
             durationMs = metadata.properties.durationMs,
