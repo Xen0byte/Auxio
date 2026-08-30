@@ -24,6 +24,7 @@ import android.content.Intent
 import android.media.audiofx.AudioEffect
 import android.os.Build
 import android.os.Bundle
+import android.util.LayoutDirection
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -112,6 +113,8 @@ class PlaybackPanelFragment :
         }
 
         binding.playbackPager?.apply {
+            // intentional LTR override since thepager is a chronological element
+            layoutDirection = View.LAYOUT_DIRECTION_LTR
             adapter = coverPagerAdapter
             userAwarePagerCallback =
                 UserAwarePagerCallback(this) {
