@@ -108,11 +108,10 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
     private val thumbHeight = context.getDimenPixels(R.dimen.size_touchable_medium)
     private var thumbAnimator: SpringAnimation? = null
 
+
     @SuppressLint("InflateParams")
     private val thumbView =
-        context.inflater.inflate(R.layout.view_scroll_thumb, null).apply {
-            translationX = thumbWidth.toFloat()
-        }
+        context.inflater.inflate(R.layout.view_scroll_thumb, null)
     private val thumbPadding = Rect(0, 0, 0, 0)
     private var thumbOffset = 0
 
@@ -284,6 +283,13 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
         )
     }
 
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+        if (!showingThumb) {
+            thumbView.translationX = if (isRtl) -thumbWidth.toFloat() else thumbWidth.toFloat()
+        }
+    }
+
     // --- RECYCLERVIEW EVENT MANAGEMENT ---
 
     private fun onPreDraw() {
@@ -374,10 +380,8 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
             MeasureSpec.makeMeasureSpec(popupSize, MeasureSpec.EXACTLY),
         )
 
-        //        val popupWidth = popupSize
-        //        val popupHeight = popupSize
         val popupLeft =
-            if (layoutDirection == LAYOUT_DIRECTION_RTL) {
+            if (isRtl) {
                 thumbPadding.left + thumbWidth + popupLayoutParams.leftMargin
             } else {
                 width - thumbPadding.right - thumbWidth - popupLayoutParams.rightMargin - popupSize
@@ -537,7 +541,7 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
 
         showingThumb = false
         thumbAnimator?.cancel()
-        thumbAnimator = thumbTranslateOutSpring.translateX(thumbView, thumbWidth.toFloat())
+        thumbAnimator = thumbTranslateOutSpring.translateX(thumbView, if (isRtl) -thumbWidth.toFloat() else thumbWidth.toFloat())
     }
 
     private fun showPopup() {
