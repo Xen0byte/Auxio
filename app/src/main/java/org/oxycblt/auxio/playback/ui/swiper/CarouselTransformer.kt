@@ -33,7 +33,6 @@ class CarouselTransformer : ViewPager2.PageTransformer {
         val height = page.height.toFloat()
 
         if (width <= 0f || height <= 0f) {
-            //
             return
         }
 
