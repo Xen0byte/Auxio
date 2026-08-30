@@ -20,6 +20,7 @@ package org.oxycblt.auxio.playback.ui
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import com.google.android.material.carousel.MaskableFrameLayout
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,7 @@ import javax.inject.Inject
 import org.oxycblt.auxio.ui.UISettings
 
 @AndroidEntryPoint
-class RoundModeMaskableFrameLayout
+class PlaybackMaskableFrameLayout
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyleRes: Int = -1) :
     MaskableFrameLayout(context, attrs, defStyleRes) {
@@ -39,5 +40,16 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleRes: Int = -1
         if (!uiSettings.roundMode) {
             shapeAppearanceModel = ShapeAppearanceModel.builder().build()
         }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        // MaskableFrameLayout is weird and decides to register clicks even when masked.
+        // Avoid this so that we can still have steppers work in the pager.
+        if (
+            event.actionMasked == MotionEvent.ACTION_DOWN && !maskRectF.contains(event.x, event.y)
+        ) {
+            return false
+        }
+        return super.dispatchTouchEvent(event)
     }
 }

@@ -20,13 +20,10 @@ package org.oxycblt.auxio.playback.ui.swiper
 
 import android.graphics.RectF
 import android.view.View
-import androidx.core.view.isInvisible
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.carousel.MaskableFrameLayout
 
 class CarouselTransformer : ViewPager2.PageTransformer {
-    private val hiddenRect = RectF()
-
     override fun transformPage(page: View, position: Float) {
         // drafted by codex mostly due to the insane complexity of abusing a viewpager2
         // into a m3 carousel like thing
@@ -46,10 +43,6 @@ class CarouselTransformer : ViewPager2.PageTransformer {
         // so we use translationX to fix them to the same pos so we can remask them however
         // we want to create our effect
         page.translationX = -position * width
-
-        // Make sure despite the pinning offscreen pages are noninteractable
-        // Otherwise funky android touch logic kicks in and breaks the playback stepper
-        page.isInvisible = position <= -1f || position >= 1f
 
         page.alpha = 1f
 
